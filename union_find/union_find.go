@@ -1,7 +1,9 @@
 package unionfind
 
+import "errors"
+
 type Element struct {
-	parent interface{}
+	parent *Element
 	size   int
 }
 
@@ -17,4 +19,19 @@ func New() *UnionFind {
 	u.count = 0
 
 	return u
+}
+
+func (v *UnionFind) Insert(key interface{}) error {
+	if _, ok := v.elements[key]; ok {
+		return errors.New("Key already exists")
+	}
+
+	e := new(Element)
+
+	e.parent = e
+	e.size = 1
+
+	v.elements[key] = e
+
+	return nil
 }
