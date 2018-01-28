@@ -61,3 +61,49 @@ func (v *UnionFind) Find(key interface{}) (*Element, error) {
 
 	return root, nil
 }
+
+func (v *UnionFind) Connected(key1, key2 interface{}) (bool, error) {
+	root1, err1 := v.Find(key1)
+
+	if err1 {
+		return false, err1
+	}
+
+	root2, err2 := v.Find(key2)
+
+	if err2 {
+		return false, err2
+	}
+
+	return root1 == root2
+}
+
+func (v *UnionFind) Union(key1, key2 interface{}) error {
+	root1, err1 := v.Find(key1)
+
+	if err1 {
+		return err1
+	}
+
+	root2, err2 := v.Find(key2)
+
+	if err2 {
+		return err2
+	}
+
+	if root1 == root2 {
+		return errors.New("Elements already connected")
+	}
+
+	if root1.size < root2.size {
+		root1.parent = root2
+		root2.size += root1.size
+	} else {
+		root2.parent = root1
+		root1.size += root2.size
+	}
+
+	v.count--
+
+	return nil
+}
