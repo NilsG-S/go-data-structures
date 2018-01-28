@@ -39,6 +39,7 @@ func (v *UnionFind) Insert(key interface{}) error {
 	e.size = 1
 
 	v.elements[key] = e
+	v.count++
 
 	return nil
 }
@@ -69,13 +70,13 @@ func (v *UnionFind) Connected(key1, key2 interface{}) (bool, error) {
 	root1, err1 := v.Find(key1)
 
 	if err1 != nil {
-		return false, fmt.Errorf("Couldn't check key1: ", err1)
+		return false, fmt.Errorf("Couldn't check key1: %v", err1)
 	}
 
 	root2, err2 := v.Find(key2)
 
 	if err2 != nil {
-		return false, fmt.Errorf("Couldn't check key2: ", err2)
+		return false, fmt.Errorf("Couldn't check key2: %v", err2)
 	}
 
 	return root1 == root2, nil
@@ -85,13 +86,13 @@ func (v *UnionFind) Union(key1, key2 interface{}) error {
 	root1, err1 := v.Find(key1)
 
 	if err1 != nil {
-		return false, fmt.Errorf("Couldn't union key1: ", err1)
+		return fmt.Errorf("Couldn't union key1: %v", err1)
 	}
 
 	root2, err2 := v.Find(key2)
 
 	if err2 != nil {
-		return false, fmt.Errorf("Couldn't union key2: ", err2)
+		return fmt.Errorf("Couldn't union key2: %v", err2)
 	}
 
 	if root1 == root2 {
