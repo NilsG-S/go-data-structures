@@ -2,6 +2,8 @@ package unionfind
 
 import "errors"
 
+// TODO(NilsG-S): Add some custom errors
+
 type Element struct {
 	parent *Element
 	size   int
@@ -65,29 +67,29 @@ func (v *UnionFind) Find(key interface{}) (*Element, error) {
 func (v *UnionFind) Connected(key1, key2 interface{}) (bool, error) {
 	root1, err1 := v.Find(key1)
 
-	if err1 {
+	if err1 != nil {
 		return false, err1
 	}
 
 	root2, err2 := v.Find(key2)
 
-	if err2 {
+	if err2 != nil {
 		return false, err2
 	}
 
-	return root1 == root2
+	return root1 == root2, nil
 }
 
 func (v *UnionFind) Union(key1, key2 interface{}) error {
 	root1, err1 := v.Find(key1)
 
-	if err1 {
+	if err1 != nil {
 		return err1
 	}
 
 	root2, err2 := v.Find(key2)
 
-	if err2 {
+	if err2 != nil {
 		return err2
 	}
 
